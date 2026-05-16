@@ -602,4 +602,93 @@ mod tests {
                 && message.contains("Dropping oversized native compaction payload")
         }));
     }
+
+    #[test]
+    fn encrypted_content_sendable_respects_safe_boundary() {
+        let at_limit = "x".repeat(OPENAI_ENCRYPTED_CONTENT_SAFE_MAX_CHARS);
+        let over_limit = "x".repeat(OPENAI_ENCRYPTED_CONTENT_SAFE_MAX_CHARS + 1);
+        assert!(openai_encrypted_content_is_sendable(""));
+        assert!(openai_encrypted_content_is_sendable(&at_limit));
+        assert!(!openai_encrypted_content_is_sendable(&over_limit));
+    }
+
+    #[test]
+    fn encrypted_content_too_large_error_matches_known_messages() {
+        assert!(is_openai_encrypted_content_too_large_error(
+            "input[12].encrypted_content: string_above_max_length"
+        ));
+        assert!(is_openai_encrypted_content_too_large_error(
+            "ENCRYPTED_CONTENT string too long for replay"
+        ));
+        assert!(is_openai_encrypted_content_too_large_error(
+            "encrypted_content exceeded maximum length"
+        ));
+        assert!(is_openai_encrypted_content_too_large_error(
+            "encrypted_content large_string_param"
+        ));
+        assert!(is_openai_encrypted_content_too_large_error(
+            "encrypted_content largeStringParam"
+        ));
+
+        assert!(!is_openai_encrypted_content_too_large_error("rate limit exceeded"));
+        assert!(!is_openai_encrypted_content_too_large_error(
+            "string_above_max_length on a different field"
+        ));
+    }
+
+    #[test]
+    fn build_responses_input_pairs_tool_use_and_result_in_order() {
+        let messages = vec![
+            ChatMessage {
+                role: Role::Assistant,
+                content: vec![ContentBlock::ToolUse {
+                    id: "call_123".to_string(),
+                    name: "read".to_string(),
+                    input: json!({"file_path": "/tmp/a"}),
+                }],
+                timestamp: None,
+                tool_duration_ms: None,
+            },
+            ChatMessage {
+                role: Role::User,
+                content: vec![ContentBlock::ToolResult {
+                    tool_use_id: "call_123".to_string(),
+                    content: "hello".to_string(),
+                    is_error: None,
+                }],
+                timestamp: None,
+                tool_duration_ms: None,
+            },
+        ];
+
+        let items = build_responses_input(&messages);
+        let types: Vec<&str> = items
+            .iter()
+            .filter_map(|item| item.get("type").and_then(|v| v.as_str()))
+            .collect();
+        assert_eq!(types, vec!["function_call", "function_call_output"]);
+        assert_eq!(items[1]["output"], json!("hello"));
+    }
+
+    #[test]
+    fn build_responses_input_injects_missing_tool_output() {
+        // Tool call with no matching ToolResult: should synthesize a missing-output item.
+        let messages = vec![ChatMessage {
+            role: Role::Assistant,
+            content: vec![ContentBlock::ToolUse {
+                id: "call_orphan".to_string(),
+                name: "read".to_string(),
+                input: json!({}),
+            }],
+            timestamp: None,
+            tool_duration_ms: None,
+        }];
+
+        let items = build_responses_input(&messages);
+        assert_eq!(items.len(), 2);
+        assert_eq!(items[0]["type"], json!("function_call"));
+        assert_eq!(items[1]["type"], json!("function_call_output"));
+        let output = items[1]["output"].as_str().expect("output text");
+        assert!(output.starts_with("[Error]"));
+    }
 }
