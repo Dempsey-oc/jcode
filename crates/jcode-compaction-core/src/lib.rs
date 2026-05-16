@@ -1,3 +1,6 @@
+//! Context-window compaction primitives: thresholds, message scoring helpers,
+//! and pure types shared between the compactor and the conversation loop.
+
 use jcode_message_types::{ContentBlock, Message, Role};
 use std::collections::HashSet;
 use std::hash::{Hash, Hasher};

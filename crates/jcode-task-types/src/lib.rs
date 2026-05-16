@@ -1,3 +1,5 @@
+//! Goal/scope and task-tracking data contracts used by the task subsystem.
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 

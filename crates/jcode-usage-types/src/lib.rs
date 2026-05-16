@@ -1,3 +1,5 @@
+//! Stable data contracts for provider usage limits and rate-limit reporting.
+
 #[derive(Debug, Clone, Default)]
 pub struct ProviderUsage {
     pub provider_name: String,

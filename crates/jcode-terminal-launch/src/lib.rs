@@ -1,3 +1,6 @@
+//! Helpers for spawning external terminal emulators with the right arguments
+//! on Linux, macOS, and Windows.
+
 use anyhow::Result;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};

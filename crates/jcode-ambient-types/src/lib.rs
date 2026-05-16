@@ -1,3 +1,5 @@
+//! Data types for ambient mode (background usage tracking and reporting).
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 

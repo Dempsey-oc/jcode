@@ -1,3 +1,6 @@
+//! Self-update download and verification helpers: checksum/version checks and
+//! progress-bar formatting shared by the updater.
+
 use anyhow::Result;
 use serde::Deserialize;
 use sha2::{Digest, Sha256};

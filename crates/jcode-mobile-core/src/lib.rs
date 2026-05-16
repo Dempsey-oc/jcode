@@ -1,3 +1,6 @@
+//! Headless mobile simulator core: screen graph, hit-testing, screenshot
+//! diffing, and serializable scenario types. No process or device I/O.
+
 use serde::{Deserialize, Serialize};
 
 pub mod protocol;

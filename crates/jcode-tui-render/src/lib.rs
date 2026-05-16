@@ -1,3 +1,6 @@
+//! Reusable TUI rendering primitives: chrome (borders, rounded boxes) and
+//! layout helpers shared across panels.
+
 pub mod chrome;
 pub mod layout;
 

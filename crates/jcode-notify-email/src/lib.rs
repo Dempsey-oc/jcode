@@ -1,3 +1,5 @@
+//! Outbound notification email rendering and parsing of reply directives.
+
 use anyhow::Result;
 
 #[derive(Debug, Clone, PartialEq, Eq)]

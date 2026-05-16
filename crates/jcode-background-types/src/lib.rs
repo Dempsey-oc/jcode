@@ -1,3 +1,6 @@
+//! Data types for background tasks: status, progress, and result envelopes
+//! shared between the agent runtime and clients.
+
 use serde::{Deserialize, Serialize};
 
 /// Status of a background task.

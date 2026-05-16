@@ -1,3 +1,6 @@
+//! Pure parsing/dedup logic for importing transcripts from other coding agents
+//! (Claude Code, Codex). No process or storage I/O beyond reading input files.
+
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};

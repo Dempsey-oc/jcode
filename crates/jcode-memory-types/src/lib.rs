@@ -1,3 +1,6 @@
+//! Memory graph data structures: nodes, edges, clusters, tags, and metadata.
+//! Stable serde shapes consumed by the memory subsystem and UI.
+
 pub mod graph;
 pub use graph::{
     ClusterEntry, Edge, EdgeKind, GRAPH_VERSION, GraphMetadata, MemoryGraph, TagEntry,

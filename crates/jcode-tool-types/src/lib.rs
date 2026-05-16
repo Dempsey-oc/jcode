@@ -1,3 +1,5 @@
+//! Pure data types for tool outputs (text, images, metadata).
+
 #[derive(Debug, Clone)]
 pub struct ToolOutput {
     pub output: String,

@@ -1,3 +1,6 @@
+//! WebSocket gateway data contracts: paired devices, push tokens, and message
+//! envelopes used by the iOS/web client.
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

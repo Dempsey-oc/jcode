@@ -1,3 +1,6 @@
+//! CLI-driven headless mobile simulator built on `jcode-mobile-core`. Used by
+//! tests and dev tooling to script mobile-like UI flows without a device.
+
 use anyhow::{Context, Result, anyhow, bail};
 use jcode_mobile_core::{
     DispatchReport, ScenarioName, ScreenshotSnapshot, SimulatorAction, SimulatorStore,

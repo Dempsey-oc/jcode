@@ -1,3 +1,5 @@
+//! Thin PDF text-extraction wrapper used by file-attachment paths.
+
 use anyhow::Result;
 use std::path::Path;
 

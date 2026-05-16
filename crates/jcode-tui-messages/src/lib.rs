@@ -1,3 +1,6 @@
+//! Message-list rendering, wrap-width math, and the per-message line cache used
+//! by the main TUI transcript view.
+
 mod cache;
 mod message;
 mod prepared;

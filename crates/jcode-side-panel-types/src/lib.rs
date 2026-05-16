@@ -1,3 +1,5 @@
+//! Data contracts for side-panel pages (markdown content surfaced in the UI).
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

@@ -1,3 +1,5 @@
+//! Data types for batch tool execution progress and results.
+
 use jcode_message_types::ToolCall;
 use serde::{Deserialize, Serialize};
 

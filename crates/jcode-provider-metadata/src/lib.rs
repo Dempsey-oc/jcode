@@ -1,3 +1,5 @@
+//! Stable metadata describing each login provider (auth kind, display info).
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LoginProviderAuthKind {
     OAuth,

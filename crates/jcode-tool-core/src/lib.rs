@@ -1,3 +1,6 @@
+//! Async `Tool` trait and shared tool-execution scaffolding consumed by every
+//! built-in tool. Defines the contract between the runtime and tool impls.
+
 use anyhow::Result;
 use async_trait::async_trait;
 use jcode_agent_runtime::InterruptSignal;
