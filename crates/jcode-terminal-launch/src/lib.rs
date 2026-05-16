@@ -1,9 +1,18 @@
 //! Helpers for spawning external terminal emulators with the right arguments
 //! on Linux, macOS, and Windows.
 
-use anyhow::Result;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
+use thiserror::Error;
+
+/// Errors returned by [`spawn_command_in_new_terminal_with`].
+#[derive(Debug, Error)]
+pub enum TerminalLaunchError {
+    #[error(transparent)]
+    Spawn(#[from] std::io::Error),
+}
+
+pub type Result<T> = std::result::Result<T, TerminalLaunchError>;
 
 #[derive(Clone, Debug)]
 pub struct TerminalCommand {

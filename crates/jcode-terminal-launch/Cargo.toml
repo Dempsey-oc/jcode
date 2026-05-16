@@ -5,5 +5,5 @@ edition = "2024"
 publish = false
 
 [dependencies]
-anyhow = "1"
 dirs = "5"
+thiserror = "1"
