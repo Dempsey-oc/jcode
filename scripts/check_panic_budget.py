@@ -81,15 +81,28 @@ def production_lines(path: Path) -> list[str]:
     output: list[str] = []
     skip_stack: list[int] = []
     pending_cfg_test = False
+    # When a `#[cfg(test)] fn`/`mod` signature spans multiple lines, the opening
+    # `{` of the item body may not appear on the same line as the keyword. While
+    # this flag is set, swallow lines until we see the opening brace, then start
+    # tracking nesting depth as usual.
+    pending_body_open = False
 
     for line in lines:
         stripped = line.strip()
         current_depth = sum(skip_stack)
         if current_depth == 0:
+            if pending_body_open:
+                delta = brace_delta(line)
+                if delta > 0:
+                    skip_stack.append(delta)
+                    pending_body_open = False
+                continue
             if pending_cfg_test and ITEM_START_RE.match(line):
                 delta = brace_delta(line)
                 if delta > 0:
                     skip_stack.append(delta)
+                else:
+                    pending_body_open = True
                 pending_cfg_test = False
                 continue
             if pending_cfg_test and stripped and not stripped.startswith("#"):
