@@ -1,3 +1,6 @@
+//! Session-scoped data contracts: rendered messages, status enums, and metadata
+//! shared between storage, server, and clients.
+
 use chrono::{DateTime, Utc};
 use jcode_message_types::{ContentBlock, Message, Role, ToolCall};
 use serde::{Deserialize, Serialize};

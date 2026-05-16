@@ -1,3 +1,6 @@
+//! OpenAI Responses-API request construction, encrypted-content fallback
+//! handling, and tool-shape helpers shared by OpenAI-compatible providers.
+
 pub mod request;
 
 pub use request::{

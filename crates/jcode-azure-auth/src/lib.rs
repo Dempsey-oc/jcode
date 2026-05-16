@@ -1,3 +1,6 @@
+//! Azure credential helpers built on `azure_identity`. Used by the Azure OpenAI
+//! provider and any other crate that needs an AAD bearer token.
+
 use anyhow::Result;
 use azure_core::credentials::TokenCredential;
 

@@ -1,3 +1,5 @@
+//! Friendly name and presentation mapping for tool calls shown in the TUI.
+
 use unicode_width::{UnicodeWidthChar, UnicodeWidthStr};
 
 /// Map provider-side tool names to internal display names.

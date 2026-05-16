@@ -1,3 +1,5 @@
+//! Stable types for the selfdev (in-place reload) subsystem.
+
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};

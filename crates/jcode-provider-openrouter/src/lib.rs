@@ -1,3 +1,6 @@
+//! OpenRouter catalog cache, endpoint preference cache, and model selection
+//! helpers. Stateful (file-backed) but provider-agnostic in behavior.
+
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::PathBuf;

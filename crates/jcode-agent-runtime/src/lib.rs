@@ -1,3 +1,6 @@
+//! Agent runtime primitives: soft-interrupt signaling and shared run-state types
+//! used by the conversation loop to coordinate cancellation and tool injection.
+
 use std::sync::Arc;
 
 /// A soft interrupt message queued for injection at the next safe point.

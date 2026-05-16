@@ -1,3 +1,5 @@
+//! Shared plan/PlanItem types used by the swarm planner and session UIs.
+
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeSet, HashMap, HashSet};
 

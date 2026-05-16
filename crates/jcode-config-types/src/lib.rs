@@ -1,3 +1,6 @@
+//! Stable serde-shape definitions for `~/.jcode/config.toml`. Kept type-only so
+//! changes here do not recompile the root crate's runtime behavior.
+
 use serde::{Deserialize, Serialize};
 
 /// Compaction mode

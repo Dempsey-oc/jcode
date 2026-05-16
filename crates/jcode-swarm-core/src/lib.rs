@@ -1,3 +1,6 @@
+//! Swarm coordination primitives: shared plan state, completion reports, and
+//! per-worker bookkeeping types.
+
 use jcode_plan::PlanItem;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::borrow::Cow;

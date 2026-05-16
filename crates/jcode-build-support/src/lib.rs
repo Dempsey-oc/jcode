@@ -1,3 +1,6 @@
+//! Build/selfdev support utilities: binary paths, source-state hashing, and
+//! storage helpers used by the build, reload, and selfdev subsystems.
+
 mod paths;
 mod platform_support;
 mod source_state;

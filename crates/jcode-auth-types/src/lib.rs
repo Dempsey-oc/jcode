@@ -1,3 +1,5 @@
+//! Stable data contracts describing provider authentication state.
+
 use serde::{Deserialize, Serialize};
 
 /// State of a single auth credential

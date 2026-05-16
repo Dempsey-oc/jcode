@@ -1,3 +1,6 @@
+//! Provider-agnostic primitives: model selection, failover policy, pricing,
+//! Anthropic header constants, OpenAI request schema, and catalog refresh.
+
 pub mod anthropic;
 pub mod catalog_refresh;
 pub mod failover;

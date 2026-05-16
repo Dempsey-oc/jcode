@@ -1,3 +1,5 @@
+//! Gemini provider request/response shapes and capability metadata.
+
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;

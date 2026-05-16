@@ -1,3 +1,5 @@
+//! Session-picker data types used by the TUI session-list surfaces.
+
 use chrono::{DateTime, Utc};
 use jcode_message_types::ToolCall;
 use jcode_session_types::SessionStatus;

@@ -1,3 +1,6 @@
+//! Markdown -> ratatui line renderer with syntect-powered syntax highlighting
+//! and a small LRU cache for hot paragraphs.
+
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd};
 use ratatui::prelude::*;
 use serde::Serialize;

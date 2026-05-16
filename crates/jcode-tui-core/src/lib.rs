@@ -1,3 +1,6 @@
+//! TUI-shared primitives: copy selection state, graph topology helpers, keybind
+//! parsing, and the streaming text buffer used by all TUI surfaces.
+
 pub mod copy_selection;
 pub mod graph_topology;
 pub use copy_selection::{

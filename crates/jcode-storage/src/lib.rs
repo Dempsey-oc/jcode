@@ -1,3 +1,6 @@
+//! Cross-platform runtime directory helpers and small atomic-write/JSON helpers
+//! used by storage paths across the workspace.
+
 use anyhow::Result;
 use serde::Serialize;
 use serde::de::DeserializeOwned;

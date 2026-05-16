@@ -1,3 +1,6 @@
+//! Core message and tool-call types used throughout the conversation pipeline.
+//! Kept dependency-light so DTO changes do not recompile downstream behavior.
+
 #[derive(Debug, Clone, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ToolCall {
     #[serde(default)]

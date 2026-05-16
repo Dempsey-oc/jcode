@@ -1,3 +1,5 @@
+//! TUI color and theme primitives, including color-capability detection.
+
 pub mod color;
 pub mod theme;
 

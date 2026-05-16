@@ -1,3 +1,5 @@
+//! Status types for the usage overlay (loading / good / warning / critical).
+
 use ratatui::style::Color;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -1,3 +1,6 @@
+//! On-device sentence embeddings via a bundled MiniLM ONNX model. Used by
+//! memory and retrieval features that need offline vector search.
+
 use anyhow::{Context, Result};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
