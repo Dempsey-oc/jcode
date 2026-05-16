@@ -260,14 +260,13 @@ fn parse_config_or_default(content: &str) -> Result<Config> {
 
 fn validate_profile_name(raw: &str) -> Result<String> {
     let name = raw.trim();
-    if name.is_empty() {
-        anyhow::bail!("provider profile name cannot be empty");
-    }
     if name.len() > 64 {
         anyhow::bail!("provider profile name must be at most 64 characters");
     }
-    let mut chars = name.chars();
-    let first = chars.next().unwrap();
+    let first = name
+        .chars()
+        .next()
+        .ok_or_else(|| anyhow::anyhow!("provider profile name cannot be empty"))?;
     if !first.is_ascii_alphanumeric() {
         anyhow::bail!("provider profile name must start with a letter or number");
     }
@@ -577,7 +576,7 @@ fn auth_label(auth: &NamedProviderAuth) -> &'static str {
 }
 
 fn toml_quote(value: &str) -> String {
-    serde_json::to_string(value).expect("string serialization cannot fail")
+    serde_json::Value::String(value.to_string()).to_string()
 }
 
 fn shell_quote(value: &str) -> String {
@@ -722,5 +721,47 @@ mod tests {
         let config = std::fs::read_to_string(temp.path().join("config.toml")).expect("config");
         assert!(config.contains("auth = \"none\""));
         assert!(config.contains("requires_api_key = false"));
+    }
+
+    #[test]
+    fn validate_profile_name_rejects_empty() {
+        let err = validate_profile_name("").unwrap_err();
+        assert!(err.to_string().contains("cannot be empty"));
+    }
+
+    #[test]
+    fn validate_profile_name_rejects_whitespace_only() {
+        let err = validate_profile_name("   \t  ").unwrap_err();
+        assert!(err.to_string().contains("cannot be empty"));
+    }
+
+    #[test]
+    fn validate_profile_name_rejects_leading_non_alphanumeric() {
+        let err = validate_profile_name("-leading-dash").unwrap_err();
+        assert!(err.to_string().contains("must start with"));
+    }
+
+    #[test]
+    fn validate_profile_name_accepts_letters_digits_and_separators() {
+        assert_eq!(
+            validate_profile_name("my-api_42").expect("valid name"),
+            "my-api_42"
+        );
+    }
+
+    #[test]
+    fn validate_profile_name_trims_surrounding_whitespace() {
+        assert_eq!(
+            validate_profile_name("  api  ").expect("valid name"),
+            "api"
+        );
+    }
+
+    #[test]
+    fn toml_quote_escapes_specials() {
+        assert_eq!(toml_quote("plain"), "\"plain\"");
+        assert_eq!(toml_quote("with \"quotes\""), "\"with \\\"quotes\\\"\"");
+        assert_eq!(toml_quote("back\\slash"), "\"back\\\\slash\"");
+        assert_eq!(toml_quote(""), "\"\"");
     }
 }
