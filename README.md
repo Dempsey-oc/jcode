@@ -607,8 +607,27 @@ Notes:
 
 ---
 
+<div align="center">
+
+## Telemetry
+
+</div>
+
+jcode sends a small amount of anonymous usage telemetry by default. The full schema and what is/isn't collected is documented in [TELEMETRY.md](TELEMETRY.md).
+
+Any of the following disables telemetry completely (zero network requests):
+
+```bash
+export JCODE_NO_TELEMETRY=1     # jcode-specific opt-out
+export DO_NOT_TRACK=1           # standard (https://consoledonottrack.com/)
+touch ~/.jcode/no_telemetry     # file-based opt-out
+```
+
+---
+
 ## Further Reading
 
+- [Configuration Reference](docs/CONFIG.md)
 - [Ambient Mode / OpenClaw](docs/AMBIENT_MODE.md)
 - [Browser Provider Protocol](docs/BROWSER_PROVIDER_PROTOCOL.md)
 - [Memory Architecture](docs/MEMORY_ARCHITECTURE.md)
@@ -616,6 +635,7 @@ Notes:
 - [Server Architecture](docs/SERVER_ARCHITECTURE.md)
 - [iOS Client Notes](docs/IOS_CLIENT.md)
 - [Safety System](docs/SAFETY_SYSTEM.md)
+- [Telemetry & Privacy](TELEMETRY.md)
 - [Windows Notes](docs/WINDOWS.md)
 - [Wrappers and Shell Integration](docs/WRAPPERS.md)
 - [Refactoring Notes](docs/REFACTORING.md)
