@@ -309,3 +309,27 @@ fn test_message_request_roundtrip_preserves_images_and_system_reminder() -> Resu
     assert_eq!(system_reminder.as_deref(), Some("be concise"));
     Ok(())
 }
+
+#[test]
+fn resolve_optional_comm_target_session_returns_current_for_none() {
+    let resolved = resolve_optional_comm_target_session(None, "sess_self");
+    assert_eq!(resolved, "sess_self");
+}
+
+#[test]
+fn resolve_optional_comm_target_session_returns_current_for_current_keyword() {
+    let resolved = resolve_optional_comm_target_session(Some("current".into()), "sess_self");
+    assert_eq!(resolved, "sess_self");
+}
+
+#[test]
+fn resolve_optional_comm_target_session_returns_target_when_set() {
+    let resolved = resolve_optional_comm_target_session(Some("sess_peer".into()), "sess_self");
+    assert_eq!(resolved, "sess_peer");
+}
+
+#[test]
+fn resolve_optional_comm_target_session_handles_empty_string() {
+    let resolved = resolve_optional_comm_target_session(Some(String::new()), "sess_self");
+    assert_eq!(resolved, "");
+}
