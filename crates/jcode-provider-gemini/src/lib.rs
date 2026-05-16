@@ -458,4 +458,71 @@ mod tests {
             ]
         );
     }
+
+    #[test]
+    fn default_model_is_in_available_models() {
+        assert!(
+            AVAILABLE_MODELS.contains(&DEFAULT_MODEL),
+            "DEFAULT_MODEL ({}) must appear in AVAILABLE_MODELS",
+            DEFAULT_MODEL
+        );
+    }
+
+    #[test]
+    fn gemini_part_function_call_roundtrips() {
+        let part = GeminiPart {
+            text: None,
+            inline_data: None,
+            function_call: Some(GeminiFunctionCall {
+                name: "read_file".to_string(),
+                args: json!({"path": "/tmp/x"}),
+                id: Some("call_42".to_string()),
+            }),
+            function_response: None,
+        };
+
+        let wire = serde_json::to_value(&part).expect("serialize");
+        // `text` and `inline_data` should be omitted by serde when None.
+        assert!(wire.get("text").is_none());
+        assert!(wire.get("inlineData").is_none());
+        // `function_call` should serialize with snake_case (no camelCase rename on the inner field name).
+        assert_eq!(wire["functionCall"]["name"], json!("read_file"));
+        assert_eq!(wire["functionCall"]["args"], json!({"path": "/tmp/x"}));
+        assert_eq!(wire["functionCall"]["id"], json!("call_42"));
+
+        let back: GeminiPart = serde_json::from_value(wire).expect("deserialize");
+        let fc = back.function_call.expect("function_call");
+        assert_eq!(fc.name, "read_file");
+        assert_eq!(fc.id.as_deref(), Some("call_42"));
+    }
+
+    #[test]
+    fn gemini_content_roundtrips_with_text_parts() {
+        let content = GeminiContent {
+            role: "user".to_string(),
+            parts: vec![GeminiPart {
+                text: Some("hello".to_string()),
+                ..Default::default()
+            }],
+        };
+
+        let wire = serde_json::to_value(&content).expect("serialize");
+        assert_eq!(wire["role"], json!("user"));
+        assert_eq!(wire["parts"][0]["text"], json!("hello"));
+
+        let back: GeminiContent = serde_json::from_value(wire).expect("deserialize");
+        assert_eq!(back.parts[0].text.as_deref(), Some("hello"));
+    }
+
+    #[test]
+    fn inline_data_uses_camel_case_mime_type() {
+        let inline = InlineData {
+            mime_type: "image/png".to_string(),
+            data: "base64payload".to_string(),
+        };
+        let wire = serde_json::to_value(&inline).expect("serialize");
+        assert!(wire.get("mime_type").is_none());
+        assert_eq!(wire["mimeType"], json!("image/png"));
+        assert_eq!(wire["data"], json!("base64payload"));
+    }
 }

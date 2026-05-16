@@ -799,6 +799,47 @@ mod tests {
     }
 
     #[test]
+    fn parse_model_spec_returns_no_provider_when_no_at() {
+        let (model, provider) = parse_model_spec("anthropic/claude-sonnet-4");
+        assert_eq!(model, "anthropic/claude-sonnet-4");
+        assert!(provider.is_none());
+    }
+
+    #[test]
+    fn parse_model_spec_handles_empty_input() {
+        let (model, provider) = parse_model_spec("");
+        assert_eq!(model, "");
+        assert!(provider.is_none());
+    }
+
+    #[test]
+    fn normalize_provider_name_resolves_aliases_and_unknown() {
+        assert_eq!(normalize_provider_name("moonshot"), "Moonshot AI");
+        assert_eq!(normalize_provider_name("FIREWORKS"), "Fireworks");
+        assert_eq!(normalize_provider_name(" deepinfra "), "DeepInfra");
+        // Unknown providers are returned trimmed but unchanged.
+        assert_eq!(normalize_provider_name(" totally-new-provider "), "totally-new-provider");
+        assert_eq!(normalize_provider_name(""), "");
+    }
+
+    #[test]
+    fn is_kimi_model_matches_known_variants() {
+        assert!(is_kimi_model("moonshotai/kimi-k2.5"));
+        assert!(is_kimi_model("MoonshotAI/Kimi-K2"));
+        assert!(is_kimi_model("openrouter/kimi-k2.6"));
+        assert!(!is_kimi_model("anthropic/claude-sonnet-4"));
+        assert!(!is_kimi_model("openai/gpt-5"));
+    }
+
+    #[test]
+    fn kimi_fallback_providers_resolve_via_normalize() {
+        // Every entry in the fallback list should normalize back to itself.
+        for &candidate in KIMI_FALLBACK_PROVIDERS {
+            assert_eq!(normalize_provider_name(candidate), candidate);
+        }
+    }
+
+    #[test]
     fn endpoint_detail_string_formats_common_fields() {
         let ep = EndpointInfo {
             provider_name: "TestProvider".to_string(),
