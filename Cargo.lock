@@ -3573,8 +3573,8 @@ dependencies = [
 name = "jcode-pdf"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "pdf-extract",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -3709,8 +3709,8 @@ dependencies = [
 name = "jcode-terminal-launch"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "dirs",
+ "thiserror 1.0.69",
 ]
 
 [[package]]

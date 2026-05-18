@@ -6,7 +6,9 @@ pub use jcode_terminal_launch::{
 use std::path::Path;
 
 pub fn spawn_command_in_new_terminal(command: &TerminalCommand, cwd: &Path) -> Result<bool> {
-    jcode_terminal_launch::spawn_command_in_new_terminal_with(command, cwd, |cmd| {
-        crate::platform::spawn_detached(cmd).map(|_| ())
-    })
+    Ok(jcode_terminal_launch::spawn_command_in_new_terminal_with(
+        command,
+        cwd,
+        |cmd| crate::platform::spawn_detached(cmd).map(|_| ()),
+    )?)
 }
